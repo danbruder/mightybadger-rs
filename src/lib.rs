@@ -224,14 +224,15 @@ fn notify_internal<'a>(
         version: env!("CARGO_PKG_VERSION"),
         language: "rust",
     });
+    let err = error.to_string();
     let causes = {
         let mut causes = Vec::new();
         let mut opterror = error.cause();
         while let Some(error) = opterror {
             let backtrace = error.backtrace().map(|bt| btparse::parse_and_decorate(bt));
             causes.push(ErrorCause {
-                class: error_class(error),
-                message: error.to_string(),
+                class: err.clone(),
+                message: err.clone(),
                 backtrace: backtrace,
             });
             opterror = error.cause();
@@ -240,8 +241,8 @@ fn notify_internal<'a>(
     };
     let error_info = ErrorInfo {
         token: id.clone(),
-        class: error_class(error),
-        message: error.to_string(),
+        class: err.clone(),
+        message: err.clone(),
         tags: vec![],
         fingerprint: "".to_string(),
         backtrace: Some(backtrace),
