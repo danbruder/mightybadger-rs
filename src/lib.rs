@@ -338,7 +338,8 @@ fn error_class<'a>(error: FailOrError<'a>) -> String {
     mod mightybadger {
         pub use crate::Panic;
     }
-    return "Fail".to_string();
+
+    return stringify!(error).to_string();
 }
 
 pub fn install_hook() {
